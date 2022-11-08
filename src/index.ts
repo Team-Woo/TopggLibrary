@@ -13,15 +13,16 @@ export interface TopggOptions {
 export class TopggLib extends EventEmitter {
 	public app: express.Application;
 	public options: TopggOptions;
+
 	private webhook;
-	db: db;
-	public _interval: NodeJS.Timer;
+	private _db: db;
+	private _interval: NodeJS.Timer;
 	constructor(authorization: string, options: TopggOptions) {
 		super();
 		this.app = express();
 		this.options = options;
 
-		this.db = new db(options.dbPath);
+		this._db = new db(options.dbPath);
 
 		this.webhook = new Webhook(authorization);
 
@@ -35,30 +36,38 @@ export class TopggLib extends EventEmitter {
 				return;
 			}
 			*/
-
-			this.db.addUser(vote.user)
-
 			this.emit('vote', vote);
+			this._db.addUser(vote.user)
 		}))
 
 		this.app.listen(this.options.port);
 
 
 		this._interval = setInterval(async () => {
-			this.db.sqlite.each(`
-			SELECT *
-			FROM voters
-			WHERE votedAt <= unixepoch(datetime('now', '-12 hours')) * 1000;
-			`, (err, row) => {
-				if (err) return console.log(err);
-				this.emit('reminder', row)
-
-				this.db.sqlite.run(`
-				DELETE FROM voters
-				WHERE id = ?
-				`, [row.id])
-			})
-		}, this.options.interval || 10000)
+			this._db.reminders(
+				(err, row) => {
+					if (err) return console.error(err);
+					this.emit('reminder', row)
+					this._db.deleteUser(row.id)
+				}
+			)
+		},
+			this.options.interval || 10000);
 
 	}
+
+	/**
+	 * 
+	 * @param id a user or memeber id
+	 * @returns true if the user voted within the past 12 hours
+	 * 
+	 * @example 
+	 * ```js
+	 * 	const voted = await topgg.hasVoted(user.id)
+	 * ```
+	 */
+	async hasVoted(id: string): Promise<boolean> {
+		return ((await this._db.getUser(id)) != undefined)
+	}
+
 }
