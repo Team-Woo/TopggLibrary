@@ -30,4 +30,14 @@ export class db {
 				new Date()
 			])
 	}
+
+	hasVoted(id: string) {
+		return new Promise((resolve, reject) => {
+			this.sqlite.get('SELECT * FROM voters WHERE id = ?', id, (err, rows) => {
+				if(err) reject(err);
+				resolve(rows != undefined)
+			})
+		})
+
+	}
 }

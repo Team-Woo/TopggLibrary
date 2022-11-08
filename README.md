@@ -54,4 +54,4 @@ topgg.on("reminder", (user) => { // occurs 12 hours after vote or test vote
 - A function to allow pausing/resuming the reminder interval is kind of nessecary.
 - TopggOptions needs defaults.
 - More error checking.
-- A hasVoted method needs to be implemented, allowing devs to votelock commands.
+- ~~A hasVoted method needs to be implemented, allowing devs to votelock commands.~~
