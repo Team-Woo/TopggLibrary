@@ -53,4 +53,5 @@ topgg.on("reminder", (user) => { // occurs 12 hours after vote or test vote
 - The current method of having an interval grab all users that voted 12 hours ago and handling them in waves isnt very clean. I'd like to rewrite this to use timers on users that are about to be 12 hour ago. This would allow a longer interval time, while being accurate to nearly a second.
 - A function to allow pausing/resuming the reminder interval is kind of nessecary.
 - TopggOptions needs defaults.
-- More error checking
+- More error checking.
+- A hasVoted method needs to be implemented, allowing devs to votelock commands.
