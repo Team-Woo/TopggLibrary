@@ -1,16 +1,16 @@
 import sqlite3 from "sqlite3";
 
 export class db {
-	db: sqlite3.Database;
+	sqlite: sqlite3.Database;
 	ready: boolean;
 	constructor(path: string) {
 		this.ready = false;
-		this.db = new sqlite3.Database(path, (err) => {
+		this.sqlite = new sqlite3.Database(path, (err) => {
 			if (err) {
 				console.error(err.message);
 			}
 		})
-		this.db.run(`
+		this.sqlite.run(`
 		CREATE TABLE IF NOT EXISTS voters (
 			id VARCHAR NOT NULL PRIMARY KEY,
 			votedAt timestamp
@@ -20,14 +20,14 @@ export class db {
 	}
 
 	addUser(id: string) {
-		this.db.run(`
+		this.sqlite.run(`
 		INSERT into voters 
 		(id, votedAt)
-		($id, $votedAt);
+		VALUES (?, ?);
 		`,
-			{
+			[
 				id,
-				votedAt: new Date()
-			})
+				new Date()
+			])
 	}
 }
