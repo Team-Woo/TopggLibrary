@@ -44,13 +44,11 @@ export class TopggLib extends EventEmitter {
 		this.app.listen(this.options.port);
 
 
-
-
 		this._interval = setInterval(async () => {
 			this.db.sqlite.each(`
 			SELECT *
 			FROM voters
-			WHERE votedAt <= datetime('now', '+12 hours');
+			WHERE votedAt <= unixepoch(datetime('now', '-12 hours')) * 1000;
 			`, (err, row) => {
 				if (err) return console.log(err);
 				this.emit('reminder', row)
