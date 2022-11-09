@@ -48,8 +48,8 @@ topgg.on("reminder", (user) => { // occurs 12 hours after vote or test vote
 ### Features that might be useful that I've not yet implemented or enabled
 - a seperate test vote event, which doesnt add the user to the database.
 - or a seperate test vote event that has a seperate in memory database for testing reminders.
-- errors in `event.on("reminder", fn)` should prevent removing the user from the database.
-- or users should have a method to remove the user from the database in the event whenever they want to rather than automagically.
+- ~~errors in `event.on("reminder", fn)` should prevent removing the user from the database.~~
+- ~~or users should have a method to remove the user from the database in the event whenever they want to rather than automagically.~~
 - The current method of having an interval grab all users that voted 12 hours ago and handling them in waves isnt very clean. I'd like to rewrite this to use timers on users that are about to be 12 hour ago. This would allow a longer interval time, while being accurate to nearly a second.
 - A function to allow pausing/resuming the reminder interval is kind of nessecary.
 - TopggOptions needs defaults.
