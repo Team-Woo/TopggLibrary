@@ -5,6 +5,9 @@ using sqlite3 allows replit support, and using the top-gg/sdk means a lot of leg
 
 I am not claiming this as a complete library, I've not really even tested it fully.
 
+Library at the time of submission: https://github.com/Team-Woo/TopggLibrary/tree/424fded6e81a5892e7684c4fbbb9971ae055a7e8
+I'm playing around with ideas & commiting them. Some ideas we may not want, and thats okay. If I'm selected I can remove, or refactor any of this code.
+
 ## Developer install & testing
 Testing an npm library should use `npm link` to 'fake' a library and allow testing.
 1. run in your terminal `git clone https://github.com/Team-Woo/TopggLibrary.git TopggLibrary` & `cd TopggLibrary`
@@ -40,6 +43,8 @@ topgg.on("vote", (vote) => { // occurs on vote or test vote
 topgg.on("reminder", (user) => { // occurs 12 hours after vote or test vote
 	console.log(`reminder event: ${JSON.stringify(user)}`)
 })
+
+const voted = await topgg.hasVoted(user.id) // boolean
 ```
 
 ------------
