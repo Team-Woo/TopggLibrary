@@ -53,7 +53,7 @@ export class db {
 		this._sqlite.each(`
 		SELECT *
 		FROM voters
-		WHERE votedAt <= unixepoch(datetime('now', '-1 minute')) * 1000;
+		WHERE votedAt <= unixepoch(datetime('now', '-12 hours')) * 1000;
 		`, callback)
 	}
 }
