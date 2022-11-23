@@ -3,7 +3,9 @@ import sqlite3 from "sqlite3";
 export class db {
 	public _sqlite: sqlite3.Database;
 	ready: boolean;
-	constructor(path: string) {
+	private remindAt: string;
+	constructor(path: string, remindAt: number) {
+		this.remindAt = remindAt.toString();
 		this.ready = false;
 		this._sqlite = new sqlite3.Database(path, (err) => {
 			if (err) {
@@ -25,7 +27,9 @@ export class db {
 		this._sqlite.run(`
 		INSERT into voters 
 		(id, votedAt)
-		VALUES (?, ?);
+		VALUES (?, ?)
+		ON CONFLICT (id) DO UPDATE
+		SET votedAt = ?2;
 		`,
 			[
 				id,
@@ -53,7 +57,7 @@ export class db {
 		this._sqlite.each(`
 		SELECT *
 		FROM voters
-		WHERE votedAt <= unixepoch(datetime('now', '-12 hours')) * 1000;
+		WHERE votedAt <= unixepoch(datetime('now', '-${this.remindAt} seconds')) * 1000;
 		`, callback)
 	}
 }

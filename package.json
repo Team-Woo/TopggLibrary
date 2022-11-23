@@ -1,6 +1,6 @@
 {
-  "name": "topgglibrary",
-  "version": "0.0.1",
+  "name": "@top-gg/voting-sdk",
+  "version": "0.1.0",
   "description": "",
   "main": "./dist/index.js",
   "scripts": {
